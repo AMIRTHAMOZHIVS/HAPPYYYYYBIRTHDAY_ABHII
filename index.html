@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday, Abhi 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0910;--bg2:#14101f;--tx:#f6f1fa;--mut:#a79fb8;--pk:#ff7eb6;--pu:#9b7bff;--gl:rgba(255,255,255,.07);--bd:rgba(255,255,255,.14);--sans:'Bricolage Grotesque',system-ui,sans-serif;--hand:'Caveat','Comic Sans MS',cursive}
+body.calm{--bg:#120f1c;--pk:#e8b4d0;--pu:#b9a8f0}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:var(--sans);line-height:1.55;overflow-x:hidden;transition:background 1.6s}
+canvas#fx{position:fixed;inset:0;z-index:0;pointer-events:none}
+section{position:relative;z-index:1;padding:96px 6vw;max-width:1200px;margin:auto}
+h2{font-size:clamp(2rem,6vw,3.6rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:12px}
+.sub{color:var(--mut);max-width:52ch;margin-bottom:40px}
+.glass{background:var(--gl);border:1px solid var(--bd);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:20px}
+.grad{background:linear-gradient(100deg,var(--pk),var(--pu));-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{font:700 1rem var(--sans);color:#fff;background:linear-gradient(100deg,var(--pk),var(--pu));border:0;border-radius:999px;padding:16px 30px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 0 0 rgba(155,123,255,0)}
+.btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 40px rgba(155,123,255,.45)}
+:focus-visible{outline:2px solid var(--pk);outline-offset:3px}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s}.rv.in{opacity:1;transform:none}
+/* loader */
+#loader{position:fixed;inset:0;z-index:99;background:#000;display:grid;place-items:center;text-align:center;padding:24px;transition:opacity .8s,visibility .8s}
+#loader.off{opacity:0;visibility:hidden}
+#lmsg{font:700 clamp(1.1rem,4vw,1.7rem) var(--sans);min-height:2.4em}
+#lmsg.err{color:#ff6b8a}
+.bar{width:min(320px,70vw);height:4px;background:#222;border-radius:9px;margin:22px auto 0;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pk),var(--pu));transition:width 1.1s}
+/* hero */
+#hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:22px}
+#hero h1{font-size:clamp(3rem,13vw,8.5rem);font-weight:800;letter-spacing:-.05em;line-height:.92}
+#hero p.lead{font-size:clamp(1.05rem,2.6vw,1.5rem);color:var(--mut);max-width:30ch}
+.warn{padding:22px 24px;max-width:460px;border-left:4px solid var(--pk)}
+.warn b{display:block;margin-bottom:8px;color:var(--pk)}
+.warn li{list-style:none;padding:3px 0}
+.warn li::before{content:"⚠ ";color:var(--pk)}
+.tilt{display:inline-block;font:600 1.7rem var(--hand);color:var(--pk);transform:rotate(-3deg)}
+/* timeline */
+.tl{display:grid;gap:18px}
+.yr{padding:0;overflow:hidden;cursor:pointer;transition:border-color .3s}
+.yr:hover,.yr.open{border-color:var(--pk)}
+.yr header{display:flex;align-items:center;gap:16px;padding:22px 24px}
+.yr header strong{font-size:1.4rem}
+.yr header em{color:var(--mut);font-style:normal;flex:1}
+.yr header span{font-size:1.5rem;transition:transform .4s}.yr.open header span{transform:rotate(45deg)}
+.yr .body{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-height:0;overflow:hidden;transition:max-height .7s,padding .5s;padding:0 24px}
+.yr.open .body{max-height:520px;padding:0 24px 24px}
+.yr .body p{align-self:center}
+.yr .body .pol{transform:rotate(2deg);justify-self:center;max-width:230px}
+/* fight */
+.fights{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.fc{padding:26px;font-size:1.15rem;font-weight:600;transition:transform .3s}.fc:hover{transform:rotate(-1.5deg) scale(1.03)}
+.fc small{display:block;color:var(--mut);font-weight:400;margin-top:8px;font-size:.85rem}
+.concl{margin-top:34px;text-align:center;font:600 clamp(1.6rem,5vw,2.6rem) var(--hand);color:var(--pk)}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px}
+.st{padding:28px 18px;text-align:center}
+.st b{display:block;font-size:clamp(2rem,5vw,3rem);font-weight:800}
+.st span{color:var(--mut);font-size:.9rem}
+/* gallery */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tab{background:var(--gl);border:1px solid var(--bd);color:var(--tx);border-radius:999px;padding:8px 16px;font:600 .9rem var(--sans);cursor:pointer}
+.tab.on{background:linear-gradient(100deg,var(--pk),var(--pu));border-color:transparent}
+#gal.polaroid,#gal.strip{columns:3 220px;column-gap:20px}
+#gal.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:4px}
+.pol{background:#f7f3ee;color:#222;padding:10px 10px 12px;border-radius:3px;box-shadow:0 14px 30px rgba(0,0,0,.55);display:block;break-inside:avoid;margin-bottom:22px;cursor:zoom-in;transition:transform .3s}
+.pol:hover{transform:rotate(0) scale(1.05)!important;z-index:3;position:relative}
+.pol img{width:100%;display:block;background:#222}
+.pol p{font:600 1.15rem var(--hand);text-align:center;margin-top:8px;line-height:1.1}
+#gal.wall .pol{padding:0;margin:0;box-shadow:none;transform:none!important;border-radius:0}
+#gal.wall .pol p{display:none}#gal.wall .pol img{aspect-ratio:1;object-fit:cover}
+#gal.strip .pol{padding:8px 8px 0;background:#111;border:1px solid #333}
+#gal.strip .pol p{color:#eee;padding-bottom:8px}
+#gal.strip .pol img{aspect-ratio:4/3;object-fit:cover}
+#lb{position:fixed;inset:0;z-index:90;background:rgba(5,4,10,.94);display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:14px}
+#lb.on{display:flex}
+#lb img{max-width:92vw;max-height:72vh;border-radius:6px;box-shadow:0 20px 80px rgba(0,0,0,.8)}
+#lb p{font:600 1.7rem var(--hand);text-align:center;color:var(--pk)}
+#lb button{position:absolute;background:var(--gl);border:1px solid var(--bd);color:#fff;border-radius:50%;width:46px;height:46px;font-size:1.3rem;cursor:pointer}
+#lb .x{top:16px;right:16px}#lb .p{left:12px;top:50%}#lb .n{right:12px;top:50%}
+/* chat */
+.chat{max-width:520px;margin:auto;padding:22px;display:flex;flex-direction:column;gap:10px;min-height:440px}
+.m{max-width:78%;padding:10px 15px;border-radius:18px;font-size:.98rem;animation:pop .35s}
+.m.a{align-self:flex-start;background:rgba(255,255,255,.12)}
+.m.b{align-self:flex-end;background:linear-gradient(100deg,var(--pk),var(--pu))}
+.m.t{opacity:.6}
+.m small{display:block;font-size:.7rem;opacity:.7}
+@keyframes pop{from{opacity:0;transform:scale(.85) translateY(10px)}}
+.alert{margin-top:10px;text-align:center;font-weight:800;color:#ff6b8a;animation:pop .5s}
+.alert div{font:600 1.5rem var(--hand);color:var(--tx);margin-top:6px}
+/* twist */
+#twist{min-height:100svh;display:flex;flex-direction:column;justify-content:center;text-align:center;align-items:center;gap:26px}
+#twist p{font-size:clamp(1.15rem,3vw,1.7rem);max-width:28ch;font-weight:400;opacity:0;transform:translateY(14px);transition:opacity 1.6s,transform 1.6s}
+#twist p.in{opacity:1;transform:none}
+#twist .row{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+#twist .pol{max-width:220px;margin:0;opacity:0;transition:opacity 2s}
+#twist .pol.in{opacity:1}
+#msg{text-align:center}
+#msg .glass{padding:clamp(26px,6vw,56px);max-width:700px;margin:auto;text-align:left}
+#msg p{margin:14px 0}
+/* final */
+#final{min-height:100svh;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+.loop{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;font-weight:800;font-size:clamp(1rem,3.4vw,1.6rem)}
+.loop span{opacity:.15;transition:.4s}.loop span.on{opacity:1;color:var(--pk)}
+#fin{opacity:0;transition:opacity 1.2s;display:flex;flex-direction:column;align-items:center;gap:16px}#fin.in{opacity:1}
+#fin h2{font-size:clamp(2.4rem,9vw,6rem)}
+#music{position:fixed;right:14px;bottom:14px;z-index:50;padding:10px 16px;border-radius:999px;font:600 .85rem var(--sans);color:var(--tx);cursor:pointer}
+#toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);z-index:60;background:#000c;padding:10px 16px;border-radius:12px;font-size:.85rem;opacity:0;transition:.4s;pointer-events:none;text-align:center;max-width:90vw}
+#toast.on{opacity:1}
+@media(max-width:640px){section{padding:72px 5vw}.yr .body{grid-template-columns:1fr}.yr.open .body{max-height:700px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div id="loader"><div><div id="lmsg"></div><div class="bar"><i id="lbar"></i></div></div></div>
+<button id="music" class="glass" aria-pressed="false">🎵 Music: OFF</button>
+<div id="toast"></div>
+<audio id="bgm" loop preload="none"></audio>
+
+<section id="hero">
+  <span class="tilt">Case file: 3 years of friendship</span>
+  <h1>Happy<br><span class="grad">Birthday,</span><br>Abhi 🎂</h1>
+  <p class="lead">3 years. Countless memories. And somehow... you're still here.</p>
+  <div class="warn glass"><b>WARNING: friendship contains</b><ul>
+    <li>∞ unnecessary fights</li><li>∞ misunderstandings</li><li>50+ questionable photos</li><li>∞ "nee enna purinjukave illaa"</li></ul></div>
+  <button class="btn" onclick="document.getElementById('story').scrollIntoView()">ENTER THE CHAOS →</button>
+</section>
+
+<section id="story">
+  <h2 class="rv">Our <span class="grad">story</span></h2>
+  <p class="sub rv">Tap each year. Edit the text in the TIMELINE list at the bottom of the file to make it yours.</p>
+  <div class="tl" id="tl"></div>
+</section>
+
+<section id="fight">
+  <h2 class="rv">Why we <span class="grad">fight</span></h2>
+  <p class="sub rv">An honest, peer-reviewed list.</p>
+  <div class="fights" id="fights"></div>
+  <div class="concl rv">Conclusion: Nee enna purinjukave illaa 😭</div>
+</section>
+
+<section id="stats">
+  <h2 class="rv">Friendship <span class="grad">statistics</span></h2>
+  <p class="sub rv">Numbers don't lie. Abhi does (about the "okay").</p>
+  <div class="stats" id="statgrid"></div>
+</section>
+
+<section id="gallery">
+  <h2 class="rv">The <span class="grad">evidence</span></h2>
+  <p class="sub rv">Every photo, fully admissible. Tap one for full screen.</p>
+  <div class="tabs" id="cats"></div>
+  <div class="tabs" id="modes"></div>
+  <div id="gal" class="polaroid"></div>
+</section>
+
+<section id="chatsec">
+  <h2 class="rv">How it <span class="grad">starts</span></h2>
+  <p class="sub rv">A normal conversation. Scroll slowly.</p>
+  <div class="chat glass" id="chat"></div>
+</section>
+
+<section id="twist">
+  <p>Okay Abhi... enough fighting for a second.</p>
+  <p>Three years of laughs, arguments, misunderstandings and memories.</p>
+  <p>We may not always understand each other, but I'm genuinely grateful you're part of my life.</p>
+  <div class="row" id="twistpics"></div>
+</section>
+
+<section id="msg">
+  <div class="glass rv">
+    <h2>Happy Birthday, <span class="grad">Abhi</span> ❤️</h2>
+    <p>I hope this year gives you happiness that's loud, success that's well earned, and memories so good you forget to be annoyed at me.</p>
+    <p>You deserve every good thing coming your way, and I'll be there for the wins, the bad days and the dumb arguments in between.</p>
+    <p><b>Let's continue fighting over ridiculous things for many more years.</b></p>
+  </div>
+</section>
+
+<section id="final">
+  <div class="loop" id="loop"></div>
+  <div id="fin">
+    <h2 class="grad">Happy Birthday, Abhi 🎂</h2>
+    <p class="sub" style="margin:0">See you in our next unnecessary argument.</p>
+    <button class="btn" id="replay">REPLAY OUR CHAOS ↻</button>
+  </div>
+</section>
+
+<div id="lb"><button class="x" aria-label="Close">✕</button><button class="p" aria-label="Previous">‹</button><img alt=""><p></p><button class="n" aria-label="Next">›</button></div>
+
+<script>
+/* ============ EDIT ME ============ */
+const PHOTO_DIR = "photos/";          // put PHOTO_01.jpg ... PHOTO_50.jpg in this folder
+const PHOTO_EXT = ".jpg";             // change to .png / .webp if needed
+const MUSIC_SRC = "D:\\abhi-birthday\\song\\music.mp3";                 // e.g. "music/song.mp3" (never autoplays)
+const CATS = ["The Beginning","Certified Chaos","Rare Normal Moments","No Context","Best Memories"];
+// 10 captions per category, in order: PHOTO_01-10 = Beginning, 11-20 = Chaos, 21-30 = Normal, 31-40 = No Context, 41-50 = Best
+const CAPTIONS = [
+ "Innocent. Unaware of what's coming.","First impressions: wrong.","Nobody knew yet.","Peak 'we'll never fight'","Day one energy","The calm before the storm","Still being polite here","Awkward but cute","Plot twist: we stayed","Before the roasting began",
+ "Reason for fight: unknown","Evidence A","Evidence B: she started it","Look at this face","Ceasefire, barely","Why are we like this","Argument in progress","Roast session","Both wrong, both loud","Treaty signed (temporary)",
+ "A rare normal photo","Look, no fighting!","Mature behaviour detected","Almost sensible","Suspiciously peaceful","Photoshoot actually worked","Nobody argued here","Screenshot this","Genuinely nice day","Enjoy it, it's rare",
+ "Don't ask","No context needed","I have questions","Who allowed this?","Delete this. (Don't.)","Out of context forever","Trust me, it made sense","This was a dare","Zero explanation","Classified",
+ "Okay this one's actually special","Laughing till it hurts","Core memory unlocked","Unplanned and perfect","This day, forever","Two chaotic souls","Best day of the year","Still smiling at this","Proof we're good together","Friends. Annoyingly."];
+const TIMELINE = [
+ {y:"Year 1",t:"How it started",s:"Two strangers, one accidental friendship. Everything was polite. Nobody had said 'okay' in that tone yet.",p:1},
+ {y:"Year 2",t:"Chaos increased",s:"Fights got more creative, roasts got sharper, and 'nee enna purinjukave illaa' became our official anthem.",p:14},
+ {y:"Year 3",t:"Somehow still friends 😂",s:"After all that, still here. Still arguing. Still laughing. Still not understanding each other.",p:42}];
+const FIGHTS = [["You didn't reply fast enough.","Seen at 3:02. Replied at 3:03. Unacceptable."],["You said \"okay.\"","Just 'okay'. With a full stop."],["You looked at me weird.","Don't deny it. I saw it."],["Neither remembers the reason.","But we both remember who was right."],["Both think they're right.","Spoiler: it's me."]];
+const STATS = [["Friendship","3","years"],["Photos","50","+"],["Unnecessary fights","∞",""],["Inside jokes","Classified",""],["Times we stopped being friends","0",""],["\"Nee enna purinjukave illaa\"","∞",""]];
+const CHAT = [["a","Abhi","hey, what are you doing?"],["b","Me","nothing much, you?"],["a","Abhi","same. btw did you eat?"],["b","Me","yes, you?"],["a","Abhi","okay."],["b","Me","okay?? why 'okay' like that"],["a","Abhi","like what? it's just okay"],["b","Me","you always do this 🙄"],["a","Abhi","I ALWAYS do this?? you didn't reply for 4 mins"],["b","Me","I was eating!!"],["a","Abhi","nee enna purinjukave illaa 😭"],["b","Me","NEE enna purinjukave illaa 😭"]];
+const LOADER = ["Loading 3 years of memories...","Calculating unnecessary fights...","ERROR: Abhi still doesn't understand me.","Nee enna purinjukave illaa 😭"];
+/* ================================= */
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const pad=n=>String(n).padStart(2,'0');
+const PHOTOS=Array.from({length:50},(_,i)=>({n:i+1,id:"PHOTO_"+pad(i+1),src:PHOTO_DIR+"PHOTO_"+pad(i+1)+PHOTO_EXT,cat:Math.floor(i/10),cap:CAPTIONS[i]||""}));
+// Placeholder shown until you add the real photo
+const ph=p=>{const h=[300,380,340,420][p.n%4];return 'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="300" height="${h}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a1d45"/><stop offset="1" stop-color="#4a2145"/></linearGradient></defs><rect width="300" height="${h}" fill="url(#g)"/><text x="150" y="${h/2}" fill="#ff7eb6" font-family="sans-serif" font-size="22" text-anchor="middle">${p.id}</text></svg>`)};
+const imgTag=(p,lazy=true)=>`<img src="${p.src}" alt="${p.cap}" ${lazy?'loading="lazy"':''} onerror="this.onerror=null;this.src=ph(PHOTOS[${p.n-1}])">`;
+const polaroid=p=>`<figure class="pol" data-n="${p.n}" style="transform:rotate(${((p.n*37)%7)-3}deg)">${imgTag(p)}<p>${p.cap}</p></figure>`;
+
+/* loader */
+(function(){const m=$('#lmsg'),b=$('#lbar');let i=0;document.body.style.overflow='hidden';
+ (function step(){m.textContent=LOADER[i];m.className=i==2?'err':'';b.style.width=((i+1)/LOADER.length*100)+'%';i++;
+  if(i<LOADER.length)setTimeout(step,1250);else setTimeout(()=>{$('#loader').classList.add('off');document.body.style.overflow='';},1500)})();})();
+
+/* particles */
+(function(){const c=$('#fx'),x=c.getContext('2d');let w,h,ps=[];const rs=()=>{w=c.width=innerWidth;h=c.height=innerHeight};rs();addEventListener('resize',rs);
+ for(let i=0;i<46;i++)ps.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+.5,v:Math.random()*.3+.08,c:Math.random()>.5?'255,126,182':'155,123,255'});
+ if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+ (function f(){x.clearRect(0,0,w,h);ps.forEach(p=>{p.y-=p.v;if(p.y<-5){p.y=h+5;p.x=Math.random()*w}x.fillStyle=`rgba(${p.c},.5)`;x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()});requestAnimationFrame(f)})();})();
+
+/* timeline */
+$('#tl').innerHTML=TIMELINE.map((t,i)=>`<div class="yr glass rv ${i==0?'open':''}"><header><strong>${t.y}</strong><em>${t.t}</em><span>+</span></header><div class="body"><p>${t.s}</p>${polaroid(PHOTOS[t.p-1])}</div></div>`).join('');
+$$('.yr').forEach(e=>e.addEventListener('click',ev=>{if(ev.target.closest('.pol'))return;e.classList.toggle('open')}));
+
+/* fights, stats */
+$('#fights').innerHTML=FIGHTS.map(f=>`<div class="fc glass rv">${f[0]}<small>${f[1]}</small></div>`).join('');
+$('#statgrid').innerHTML=STATS.map(s=>`<div class="st glass rv"><b ${/^\d+$/.test(s[1])?`data-to="${s[1]}" data-suf="${s[2]}"`:''} class="${s[1]=='∞'?'grad':''}">${/^\d+$/.test(s[1])?'0':s[1]}</b><span>${s[0]}${/^\d+$/.test(s[1])&&s[2]&&s[2]!='+'?' ('+s[2]+')':''}</span></div>`).join('');
+const cnt=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const b=e.target.querySelector('b[data-to]');cnt.unobserve(e.target);if(!b)return;const to=+b.dataset.to,suf=b.dataset.suf=='+'?'+':'';let t0;(function f(t){t0=t0||t;const k=Math.min((t-t0)/1600,1);b.textContent=Math.round(to*(1-Math.pow(1-k,3)))+suf;if(k<1)requestAnimationFrame(f)})(performance.now())}),{threshold:.6});
+$$('.st').forEach(e=>cnt.observe(e));
+
+/* gallery */
+let cat=-1,mode='polaroid',list=PHOTOS;
+$('#cats').innerHTML=['All',...CATS].map((c,i)=>`<button class="tab ${i==0?'on':''}" data-c="${i-1}">${c}</button>`).join('');
+$('#modes').innerHTML=[['polaroid','Polaroids'],['strip','Photo strips'],['wall','Memory wall']].map((m,i)=>`<button class="tab ${i==0?'on':''}" data-m="${m[0]}">${m[1]}</button>`).join('');
+function draw(){list=cat<0?PHOTOS:PHOTOS.filter(p=>p.cat==cat);const g=$('#gal');g.className=mode;g.innerHTML=list.map(polaroid).join('')}
+$('#cats').onclick=e=>{const b=e.target.closest('.tab');if(!b)return;cat=+b.dataset.c;$$('#cats .tab').forEach(t=>t.classList.toggle('on',t==b));draw()};
+$('#modes').onclick=e=>{const b=e.target.closest('.tab');if(!b)return;mode=b.dataset.m;$$('#modes .tab').forEach(t=>t.classList.toggle('on',t==b));draw()};
+draw();
+
+/* lightbox */
+let cur=0,view=[];
+function show(i){cur=(i+view.length)%view.length;const p=view[cur];const im=$('#lb img');im.onerror=()=>{im.onerror=null;im.src=ph(p)};im.src=p.src;$('#lb p').textContent=p.id+' · '+p.cap}
+function openLb(n){view=document.body.contains($('#gal'))&&$('#gal').querySelector(`[data-n="${n}"]`)?list:PHOTOS;show(view.findIndex(p=>p.n==n));$('#lb').classList.add('on')}
+document.addEventListener('click',e=>{const f=e.target.closest('.pol');if(f)openLb(+f.dataset.n)});
+$('#lb .x').onclick=()=>$('#lb').classList.remove('on');$('#lb .p').onclick=()=>show(cur-1);$('#lb .n').onclick=()=>show(cur+1);
+$('#lb').onclick=e=>{if(e.target.id=='lb')$('#lb').classList.remove('on')};
+addEventListener('keydown',e=>{if(!$('#lb').classList.contains('on'))return;if(e.key=='Escape')$('#lb').classList.remove('on');if(e.key=='ArrowLeft')show(cur-1);if(e.key=='ArrowRight')show(cur+1)});
+
+/* chat */
+let chatDone=false,chatT=[];
+function runChat(){const c=$('#chat');c.innerHTML='';chatT.forEach(clearTimeout);chatT=[];let t=400;
+ CHAT.forEach(m=>{chatT.push(setTimeout(()=>{const d=document.createElement('div');d.className='m '+m[0];d.innerHTML=`<small>${m[1]}</small>${m[2]}`;c.appendChild(d)},t));t+=1050});
+ chatT.push(setTimeout(()=>{const a=document.createElement('div');a.className='alert';a.innerHTML='ARGUMENT INITIATED ⚠️<div>"Nee enna purinjukave illaa 😭"</div>';c.appendChild(a)},t+300))}
+new IntersectionObserver((es,o)=>{if(es[0].isIntersecting&&!chatDone){chatDone=true;runChat()}},{threshold:.4}).observe($('#chat'));
+
+/* twist (calm mode) */
+$('#twistpics').innerHTML=[8,26,45].map(n=>polaroid(PHOTOS[n-1])).join('');
+const tw=$('#twist');
+new IntersectionObserver(es=>es.forEach(e=>{document.body.classList.toggle('calm',e.isIntersecting||e.boundingClientRect.top<0);
+ if(e.isIntersecting){$$('#twist p').forEach((p,i)=>setTimeout(()=>p.classList.add('in'),i*2200));$$('#twist .pol').forEach((p,i)=>setTimeout(()=>p.classList.add('in'),7000+i*900))}}),{threshold:.35}).observe(tw);
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)document.body.classList.remove('calm')}),{threshold:.3}).observe($('#final'));
+
+/* final */
+const steps=["FIGHT","→","IGNORE","→","LAUGH","→","FORGIVE","→","REPEAT"];
+$('#loop').innerHTML=steps.map(s=>`<span>${s}</span>`).join('');
+let finDone=false,finT=[];
+function runFinal(){$$('#loop span').forEach(s=>s.classList.remove('on'));$('#fin').classList.remove('in');finT.forEach(clearTimeout);finT=[];
+ $$('#loop span').forEach((s,i)=>finT.push(setTimeout(()=>s.classList.add('on'),i*550)));finT.push(setTimeout(()=>$('#fin').classList.add('in'),steps.length*550+400))}
+new IntersectionObserver(es=>{if(es[0].isIntersecting&&!finDone){finDone=true;runFinal()}},{threshold:.5}).observe($('#final'));
+$('#replay').onclick=()=>{finDone=chatDone=false;scrollTo({top:0});setTimeout(()=>{$$('.yr').forEach((y,i)=>y.classList.toggle('open',i==0));$$('#twist p,#twist .pol').forEach(p=>p.classList.remove('in'));$('#lb').classList.remove('on')},600)};
+/* reveal */
+const rv=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rv.unobserve(e.target)}}),{threshold:.15});
+$$('.rv').forEach(e=>rv.observe(e));
+
+/* music (off by default, never autoplays) */
+const mb=$('#music'),au=$('#bgm');let on=false;
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2800)}
+mb.onclick=()=>{if(!MUSIC_SRC){toast('Add a song path to MUSIC_SRC in the file');return}
+ if(!au.src)au.src=MUSIC_SRC;on=!on;on?au.play().catch(()=>{on=false;toast('Could not play audio')}):au.pause();
+ mb.textContent='🎵 Music: '+(on?'ON':'OFF');mb.setAttribute('aria-pressed',on)};
+</script>
+</body>
+</html>
